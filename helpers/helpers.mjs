@@ -1,5 +1,4 @@
 import sqlite3 from "sqlite3";
-import {userMessages, userNews} from "../constants.mjs";
 
 export const dbConnect = (path) => new sqlite3.Database(path, (err) => {
     if (err) {
@@ -38,63 +37,4 @@ export const convertPropertiesToJson = (obj) => {
     return obj;
 }
 
-
-export const handleRequest = async (url, dbPath) => {
-    switch (url) {
-        case '/profile': {
-            const query = 'SELECT * FROM profiles WHERE id = ?';
-            try {
-                const row = await new Promise((resolve, reject) => {
-                    dbConnect(dbPath).get(query, [1], (err, row) => {
-                        if (err) {
-                            console.error('Ошибка при выполнении запроса:', err.message);
-                            reject({ error: 'Ошибка при получении данных из базы данных' });
-                        } else {
-                            resolve(row);
-                        }
-                    });
-                });
-
-                if (row) {
-                    return parseJSONFields(row);
-                } else {
-                    return { error: 'Данные не найдены' };
-                }
-            } catch (error) {
-                return error;
-            }
-        }
-
-        case '/user-news': {
-            const query = 'SELECT * FROM userNews';
-            try {
-                const rows = await new Promise((resolve, reject) => {
-                    dbConnect(dbPath).all(query, [], (err, rows) => {
-                        if (err) {
-                            console.error('Ошибка при выполнении запроса:', err.message);
-                            reject({ error: 'Ошибка при получении данных из базы данных' });
-                        } else {
-                            resolve(rows);
-                        }
-                    });
-                });
-
-                if (rows && rows.length > 0) {
-                    return rows.map(row => parseJSONFields(row));
-                } else {
-                    return { error: 'Данные не найдены' };
-                }
-            } catch (error) {
-                return error;
-            }
-        }
-
-
-        case '/user-messages':
-            return userMessages;
-
-        default:
-            return { error: 'Неверный URL' };
-    }
-}
 
