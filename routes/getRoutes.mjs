@@ -1,4 +1,4 @@
-import {handleRequest} from "./handleRequest.mjs";
+import {handleRequest, updateProfileData} from "./handleRequest.mjs";
 
 export const getRoutes = (app, dbPath) => {
     app.get('/profile', async (req, res) => {
