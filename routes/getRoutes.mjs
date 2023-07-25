@@ -19,11 +19,9 @@ export const getRoutes = (app, dbPath) => {
         res.json(data);
     });
 
-
     app.post('/setProfileData', async (req, res) => {
-        const newData = req.body; // Предполагаем, что данные отправлены в теле запроса (например, в формате JSON)
         try {
-            await updateProfileData(dbPath, newData);
+            await updateProfileData(dbPath, req.body);
             res.json({ message: 'Данные профиля успешно обновлены' });
         } catch (error) {
             console.error('Ошибка при обновлении данных профиля:', error.message);

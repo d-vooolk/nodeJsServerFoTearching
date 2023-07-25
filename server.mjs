@@ -7,6 +7,7 @@ const port = 80;
 const dbPath = './db/mydatabase.db';
 
 app.use(cors());
+app.use(express.json());
 
 getRoutes(app, dbPath);
 
