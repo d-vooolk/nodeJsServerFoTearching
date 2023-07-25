@@ -2,9 +2,9 @@ import {userMessages} from "../constants.mjs";
 import {dbConnect} from "../helpers/helpers.mjs";
 
 const dbPath = './mydatabase.db';
+const db = dbConnect(dbPath);
 
-
-dbConnect(dbPath).run(`
+db.run(`
       CREATE TABLE IF NOT EXISTS userMessages (
         senderName TEXT,
         senderID INTEGER,
@@ -18,7 +18,7 @@ dbConnect(dbPath).run(`
         console.log('Таблица userMessages успешно создана');
         userMessages.forEach((message) => {
             const {senderName, senderID, senderPhoto, text, sendDate} = message;
-            dbConnect(dbPath).run(`
+            db.run(`
             INSERT INTO userMessages (senderName, senderID, senderPhoto, text, sendDate)
             VALUES (?, ?, ?, ?, ?)`, [senderName, senderID, senderPhoto, text, sendDate], (err) => {
                 if (err) {
@@ -31,7 +31,7 @@ dbConnect(dbPath).run(`
     }
 });
 
-dbConnect(dbPath).close((err) => {
+db.close((err) => {
     if (err) {
         console.error('Ошибка при закрытии базы данных:', err.message);
     } else {

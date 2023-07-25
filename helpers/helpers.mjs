@@ -37,4 +37,9 @@ export const convertPropertiesToJson = (obj) => {
     return obj;
 }
 
+export const catchError = (error, res) => {
+    console.error('Ошибка при обновлении данных:', error.message);
+    res.status(500).json({ error: 'Ошибка при обновлении данных' });
+}
+
 

@@ -1,9 +1,10 @@
 import {userNews} from "../constants.mjs";
 import {dbConnect} from "../helpers/helpers.mjs";
 
-const dbName = 'mydatabase.db';
+const dbPath = 'mydatabase.db';
+const db = dbConnect(dbPath);
 
-dbConnect(dbName).run(`
+db.run(`
     CREATE TABLE IF NOT EXISTS userNews (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       text TEXT NOT NULL,
@@ -15,13 +16,13 @@ dbConnect(dbName).run(`
 
 userNews.forEach(news => {
     const {text, picture, creationDate, comments} = news;
-    dbConnect(dbName).run(`
+    db.run(`
       INSERT INTO userNews (text, picture, creationDate, comments)
       VALUES (?, ?, ?, ?)
     `, [text, picture, creationDate, JSON.stringify(comments)]);
 });
 
-dbConnect(dbName).close((err) => {
+db.close((err) => {
     if (err) {
         console.error('Ошибка при закрытии базы данных:', err.message);
     } else {
