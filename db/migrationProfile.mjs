@@ -2,7 +2,7 @@ import {profileData} from "../constants.mjs";
 import {convertPropertiesToJson, dbConnect} from "../helpers/helpers.mjs";
 const dbName = 'mydatabase.db';
 
-convertPropertiesToJson(profileData);
+const JSONProps = convertPropertiesToJson(profileData);
 
 dbConnect(dbName).run(`CREATE TABLE IF NOT EXISTS profiles (
   id INTEGER PRIMARY KEY,
@@ -23,8 +23,8 @@ dbConnect(dbName).run(`CREATE TABLE IF NOT EXISTS profiles (
   subscribers TEXT
 )`);
 
-const keys = Object.keys(profileData);
-const values = Object.values(profileData);
+const keys = Object.keys(JSONProps);
+const values = Object.values(JSONProps);
 
 const placeholders = keys.map(() => '?').join(',');
 const insertQuery = `INSERT INTO profiles (${keys.join(',')}) VALUES (${placeholders})`;
