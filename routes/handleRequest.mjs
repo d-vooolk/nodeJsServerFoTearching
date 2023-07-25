@@ -50,3 +50,19 @@ export const handleRequest = async (url, dbPath) => {
             return { error: 'Неверный URL' };
     }
 };
+
+export const updateProfileData = async (dbPath, newData) => {
+    const { id, ...fields } = newData;
+
+    const setClause = Object.keys(fields).map(field => `${field} = ?`).join(', ');
+    const values = Object.values(fields);
+
+    const query = `UPDATE profiles SET ${setClause} WHERE id = ?`;
+    values.push(id);
+
+    const db = dbConnect(dbPath);
+
+    await db.run(query, values);
+
+    db.close();
+};
