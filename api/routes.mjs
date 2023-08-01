@@ -1,24 +1,32 @@
 import {getters} from "./getters.mjs";
 import {catchError} from "../helpers/helpers.mjs";
 import {updateProfileData, updateUserMessages, updateUserNews} from './setters.js';
+import {
+    GET_PROFILE_DATA,
+    GET_USER_MESSAGES,
+    GET_USER_NEWS,
+    SET_PROFILE_DATA,
+    SET_USER_MESSAGES,
+    SET_USER_NEWS
+} from "./constants.mjs";
 
 export const routes = (app, dbPath) => {
 
     // GET
 
-    app.get('/profile', async (req, res) => {
+    app.get(GET_PROFILE_DATA, async (req, res) => {
         const url = req.url;
         const data = await getters(url, dbPath);
         res.json(data);
     });
 
-    app.get('/user-news', async (req, res) => {
+    app.get(GET_USER_NEWS, async (req, res) => {
         const url = req.url;
         const data = await getters(url, dbPath);
         res.json(data);
     });
 
-    app.get('/user-messages', async (req, res) => {
+    app.get(GET_USER_MESSAGES, async (req, res) => {
         const url = req.url;
         const data = await getters(url, dbPath);
         res.json(data);
@@ -27,24 +35,29 @@ export const routes = (app, dbPath) => {
 
     // POST
 
-    app.post('/setProfileData', async (req, res) => {
+    app.post(SET_PROFILE_DATA, async (req, res) => {
         try {
             await updateProfileData(dbPath, req.body);
-            res.json({ message: 'Данные профиля успешно обновлены' });
-        } catch (error) { catchError(error, res) }
+            const updatedData = await getters(GET_PROFILE_DATA, dbPath);
+            res.json(updatedData);
+        } catch (error) {
+            catchError(error, res);
+        }
     });
 
-    app.post('/setUserNewsData', async (req, res) => {
+    app.post(SET_USER_NEWS, async (req, res) => {
         try {
             await updateUserNews(dbPath, req.body);
-            res.json({ message: 'Данные новостей успешно обновлены' });
+            const updatedData = await getters(GET_USER_NEWS, dbPath);
+            res.json(updatedData);
         } catch (error) { catchError(error, res) }
     });
 
-    app.post('/setUserMessagesData', async (req, res) => {
+    app.post(SET_USER_MESSAGES, async (req, res) => {
         try {
             await updateUserMessages(dbPath, req.body);
-            res.json({ message: 'Данные сообщений успешно обновлены' });
+            const updatedData = await getters(GET_USER_MESSAGES, dbPath);
+            res.json(updatedData);
         } catch (error) { catchError(error, res) }
     });
 }

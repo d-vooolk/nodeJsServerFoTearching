@@ -1,4 +1,5 @@
 import {dbConnect, parseJSONFields} from "../helpers/helpers.mjs";
+import {GET_PROFILE_DATA, GET_USER_MESSAGES, GET_USER_NEWS} from "./constants.mjs";
 
 const executeQuery = async (dbPath, query, params = []) => {
     return new Promise((resolve, reject) => {
@@ -15,7 +16,7 @@ const executeQuery = async (dbPath, query, params = []) => {
 
 export const getters = async (url, dbPath) => {
     switch (url) {
-        case '/profile': {
+        case GET_PROFILE_DATA: {
             const query = 'SELECT * FROM profiles WHERE id = ?';
             try {
                 const row = await executeQuery(dbPath, query, [1]);
@@ -26,7 +27,7 @@ export const getters = async (url, dbPath) => {
             }
         }
 
-        case '/user-news': {
+        case GET_USER_NEWS: {
             const query = 'SELECT * FROM userNews';
             try {
                 const rows = await executeQuery(dbPath, query);
@@ -36,7 +37,7 @@ export const getters = async (url, dbPath) => {
             }
         }
 
-        case '/user-messages': {
+        case GET_USER_MESSAGES: {
             const query = 'SELECT * FROM userMessages';
             try {
                 const rows = await executeQuery(dbPath, query);

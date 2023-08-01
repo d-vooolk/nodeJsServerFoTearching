@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import {routes} from "./routes/routes.mjs";
+import {routes} from "./api/routes.mjs";
 
 const app = express();
 const port = 80;
