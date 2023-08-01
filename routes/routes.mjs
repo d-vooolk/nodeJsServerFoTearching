@@ -1,4 +1,4 @@
-import {handleRequest} from "./handleRequest.mjs";
+import {getters} from "./getters.mjs";
 import {catchError} from "../helpers/helpers.mjs";
 import {updateProfileData, updateUserMessages, updateUserNews} from './setters.js';
 
@@ -8,19 +8,19 @@ export const routes = (app, dbPath) => {
 
     app.get('/profile', async (req, res) => {
         const url = req.url;
-        const data = await handleRequest(url, dbPath);
+        const data = await getters(url, dbPath);
         res.json(data);
     });
 
     app.get('/user-news', async (req, res) => {
         const url = req.url;
-        const data = await handleRequest(url, dbPath);
+        const data = await getters(url, dbPath);
         res.json(data);
     });
 
     app.get('/user-messages', async (req, res) => {
         const url = req.url;
-        const data = await handleRequest(url, dbPath);
+        const data = await getters(url, dbPath);
         res.json(data);
     });
 

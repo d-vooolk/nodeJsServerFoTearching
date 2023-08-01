@@ -3,6 +3,10 @@ import {dbConnect} from "../helpers/helpers.mjs";
 export const updateProfileData = async (dbPath, newData) => {
     const { id, ...fields } = newData;
 
+    fields.classmates = JSON.stringify(fields.classmates);
+    fields.friends = JSON.stringify(fields.friends);
+    fields.subscribers = JSON.stringify(fields.subscribers);
+
     const setClause = Object.keys(fields).map(field => `${field} = ?`).join(', ');
     const values = Object.values(fields);
 

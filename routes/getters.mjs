@@ -13,7 +13,7 @@ const executeQuery = async (dbPath, query, params = []) => {
     });
 };
 
-export const handleRequest = async (url, dbPath) => {
+export const getters = async (url, dbPath) => {
     switch (url) {
         case '/profile': {
             const query = 'SELECT * FROM profiles WHERE id = ?';
