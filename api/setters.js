@@ -4,7 +4,6 @@ export const updateProfileData = async (dbPath, newData) => {
     try {
         const { id, ...fields } = newData;
 
-        fields.classmates = JSON.stringify(fields.classmates);
         fields.friends = JSON.stringify(fields.friends);
         fields.subscribers = JSON.stringify(fields.subscribers);
 

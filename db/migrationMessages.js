@@ -1,4 +1,4 @@
-import {userMessages} from "../constants.mjs";
+import {userMessages} from "./constants.mjs";
 import {dbConnect} from "../helpers/helpers.mjs";
 
 const dbPath = './mydatabase.db';
