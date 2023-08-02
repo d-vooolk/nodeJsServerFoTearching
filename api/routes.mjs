@@ -11,6 +11,7 @@ import {
     SET_USER_NEWS
 } from "./constants.mjs";
 import {getUserByLogin} from "./getters/getUserByLogin.mjs";
+import {AUTH} from "./constants.mjs";
 
 export const routes = (app, dbPath) => {
 
@@ -52,7 +53,9 @@ export const routes = (app, dbPath) => {
             await updateUserNews(dbPath, req.body);
             const updatedData = await getters(GET_USER_NEWS, dbPath);
             res.json(updatedData);
-        } catch (error) { catchError(error, res) }
+        } catch (error) {
+            catchError(error, res)
+        }
     });
 
     app.post(SET_USER_MESSAGES, async (req, res) => {
@@ -60,7 +63,9 @@ export const routes = (app, dbPath) => {
             await updateUserMessages(dbPath, req.body);
             const updatedData = await getters(GET_USER_MESSAGES, dbPath);
             res.json(updatedData);
-        } catch (error) { catchError(error, res) }
+        } catch (error) {
+            catchError(error, res)
+        }
     });
 
 
@@ -69,20 +74,39 @@ export const routes = (app, dbPath) => {
             const registrationData = req.body;
 
             setTimeout(async () => {
-                const existingUser = await getUserByLogin(dbPath, registrationData.login);
+                const existingUser = await getUserByLogin(dbPath, registrationData);
 
                 if (existingUser) {
-                    return res.status(400).json({ error: 'Пользователь с таким логином уже существует' });
+                    return res.status(400).json({error: 'Пользователь с таким логином уже существует'});
                 }
 
                 await registerUser(dbPath, registrationData);
-                res.status(200).json({ success: 'Пользователь успешно добавлен' });
+                res.status(200).json({success: 'Пользователь успешно добавлен'});
             }, 1000);
         } catch (error) {
             catchError(error, res);
         }
     });
 
+    app.post(AUTH, async (req, res) => {
+        try {
+            const authData = req.body;
+
+            const existingUser = await getUserByLogin(dbPath, authData);
+
+            if (!existingUser) {
+                return res.status(400).json({error: 'Пользователя с такими данными не существует'});
+            }
+
+            if (authData.login === existingUser.login && authData.password === existingUser.password) {
+                return res.status(200).json({success: 'Вход успешно выполнен'});
+            }
+
+            return res.status(400).json({error: 'Данные не верны'});
+        } catch (error) {
+            catchError(error, res);
+        }
+    });
 
 
 }

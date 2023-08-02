@@ -1,12 +1,12 @@
 import sqlite3 from "sqlite3";
 
-export const getUserByLogin = async (dbPath, login) => {
+export const getUserByLogin = async (dbPath, data) => {
     let db = null;
 
     try {
         db = new sqlite3.Database(dbPath);
         return await new Promise((resolve, reject) => {
-            db.get('SELECT * FROM authData WHERE login = ?', [login], (err, row) => {
+            db.get('SELECT * FROM authData WHERE login = ?', [data.login], (err, row) => {
                 if (err) {
                     reject(err);
                 } else {
