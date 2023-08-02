@@ -15,7 +15,15 @@ export const updateProfileData = async (dbPath, newData) => {
 
         const db = dbConnect(dbPath);
 
-        await db.run(query, values);
+        const checkUserQuery = 'SELECT id FROM profiles WHERE id = ?';
+        const checkUserResult = await db.get(checkUserQuery, [id]);
+
+        if (checkUserResult) {
+            await db.run(query, values);
+            console.log('Данные профиля успешно обновлены');
+        } else {
+            console.error('Пользователь с таким id не найден');
+        }
 
         db.close();
     } catch (error) {
@@ -23,6 +31,7 @@ export const updateProfileData = async (dbPath, newData) => {
         throw new Error('Ошибка при обновлении данных профиля');
     }
 };
+
 
 
 export const updateUserNews = async (dbPath, newData) => {
