@@ -1,6 +1,6 @@
-import {dbConnect, generateRandomUser} from "../helpers/helpers.mjs";
+import {dbConnect, generateRandomUser} from "../../helpers/helpers.mjs";
 
-const dbPath = 'mydatabase.db';
+const dbPath = '../mydatabase.db';
 const db = dbConnect(dbPath);
 
 db.run(`

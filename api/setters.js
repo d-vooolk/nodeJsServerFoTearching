@@ -72,3 +72,20 @@ export const updateUserMessages = async (dbPath, newData) => {
         throw new Error('Ошибка при обновлении данных сообщений');
     }
 };
+
+
+export const registerUser = async (dbPath, registrationData) => {
+    try {
+        const { email, login, password } = registrationData;
+        const db = dbConnect(dbPath);
+
+        const insertStmt = db.prepare('INSERT INTO authData (email, login, password) VALUES (?, ?, ?)');
+        await insertStmt.run(email, login, password);
+        insertStmt.finalize();
+
+        db.close();
+    } catch (error) {
+        console.error('Ошибка при регистрации пользователя:', error.message);
+        throw new Error('Ошибка при регистрации пользователя');
+    }
+};

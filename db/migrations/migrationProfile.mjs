@@ -1,7 +1,7 @@
 import { profileData } from "./constants.mjs";
-import { convertPropertiesToJson, dbConnect } from "../helpers/helpers.mjs";
+import { convertPropertiesToJson, dbConnect } from "../../helpers/helpers.mjs";
 
-const dbPath = 'mydatabase.db';
+const dbPath = '../mydatabase.db';
 const db = dbConnect(dbPath);
 
 const JSONProps = convertPropertiesToJson(profileData);

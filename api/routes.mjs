@@ -1,14 +1,16 @@
 import {getters} from "./getters.mjs";
 import {catchError} from "../helpers/helpers.mjs";
-import {updateProfileData, updateUserMessages, updateUserNews} from './setters.js';
+import {registerUser, updateProfileData, updateUserMessages, updateUserNews} from './setters.js';
 import {
     GET_PROFILE_DATA,
     GET_USER_MESSAGES,
     GET_USER_NEWS,
+    REGISTRATION_NEW_USER,
     SET_PROFILE_DATA,
     SET_USER_MESSAGES,
     SET_USER_NEWS
 } from "./constants.mjs";
+import {getUserByLogin} from "./getters/getUserByLogin.mjs";
 
 export const routes = (app, dbPath) => {
 
@@ -60,4 +62,27 @@ export const routes = (app, dbPath) => {
             res.json(updatedData);
         } catch (error) { catchError(error, res) }
     });
+
+
+    app.post(REGISTRATION_NEW_USER, async (req, res) => {
+        try {
+            const registrationData = req.body;
+
+            setTimeout(async () => {
+                const existingUser = await getUserByLogin(dbPath, registrationData.login);
+
+                if (existingUser) {
+                    return res.status(400).json({ error: 'Пользователь с таким логином уже существует' });
+                }
+
+                await registerUser(dbPath, registrationData);
+                res.status(200).json({ success: 'Пользователь успешно добавлен' });
+            }, 1000);
+        } catch (error) {
+            catchError(error, res);
+        }
+    });
+
+
+
 }

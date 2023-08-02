@@ -1,7 +1,7 @@
 import {userMessages} from "./constants.mjs";
-import {dbConnect} from "../helpers/helpers.mjs";
+import {dbConnect} from "../../helpers/helpers.mjs";
 
-const dbPath = './mydatabase.db';
+const dbPath = '../mydatabase.db';
 const db = dbConnect(dbPath);
 
 db.run(`
