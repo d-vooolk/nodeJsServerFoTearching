@@ -8,11 +8,11 @@ const JSONProps = convertPropertiesToJson(profileData);
 
 db.run(`CREATE TABLE IF NOT EXISTS profiles (
   id INTEGER PRIMARY KEY,
+  avatar TEXT,
   gender TEXT,
   age INTEGER,
   name TEXT,
   secondName TEXT,
-  surname TEXT,
   aboutMe TEXT,
   status TEXT,
   city TEXT,

@@ -17,11 +17,14 @@ const executeQuery = async (dbPath, query, params = []) => {
 export const getters = async (url, dbPath) => {
     switch (url) {
         case GET_PROFILE_DATA: {
-            const query = 'SELECT * FROM profiles WHERE id = ?';
+            const query = 'SELECT * FROM profiles';
             try {
-                const row = await executeQuery(dbPath, query, [1]);
-                return row ? parseJSONFields(row) : { error: 'Данные не найдены' };
-
+                const rows = await executeQuery(dbPath, query);
+                if (rows.length > 0) {
+                    return rows.map(row => parseJSONFields(row));
+                } else {
+                    return { error: 'Данные не найдены' };
+                }
             } catch (error) {
                 return error;
             }

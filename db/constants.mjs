@@ -1,10 +1,10 @@
 export const profileData = {
     id: 1,
+    avatar: 'http://',
     gender: 'male',
     age: 10,
     name: 'andrey',
     secondName: 'shytau',
-    surname: 'valerevich',
     aboutMe: 'GJHJHHGJBVGJGGHB',
     status: 'unmarred',
     city: 'minsk',
