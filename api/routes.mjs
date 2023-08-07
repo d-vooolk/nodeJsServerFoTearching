@@ -12,6 +12,8 @@ import {
 } from "./constants.mjs";
 import {getUserByLogin} from "./getters/getUserByLogin.mjs";
 import {AUTH} from "./constants.mjs";
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 export const routes = (app, dbPath) => {
 
@@ -89,6 +91,10 @@ export const routes = (app, dbPath) => {
     });
 
     app.post(AUTH, async (req, res) => {
+        dotenv.config();
+
+        const secretKey = process.env.SECRET_KEY;
+
         try {
             const authData = req.body;
 
@@ -98,8 +104,15 @@ export const routes = (app, dbPath) => {
                 return res.status(400).json({error: 'Пользователя с такими данными не существует'});
             }
 
+            const userData = {
+                userId: existingUser.id,
+                login: existingUser.login
+            }
+
             if (authData.login === existingUser.login && authData.password === existingUser.password) {
-                return res.status(200).json({success: 'Вход успешно выполнен'});
+                const token = jwt.sign(userData, secretKey, { expiresIn: '1h' });
+                console.log('token', token);
+                return res.status(200).json({success: 'Вход успешно выполнен', token});
             }
 
             return res.status(400).json({error: 'Данные не верны'});
