@@ -111,7 +111,6 @@ export const routes = (app, dbPath) => {
 
             if (authData.login === existingUser.login && authData.password === existingUser.password) {
                 const token = jwt.sign(userData, secretKey, { expiresIn: '1h' });
-                console.log('token', token);
                 return res.status(200).json({success: 'Вход успешно выполнен', token});
             }
 
