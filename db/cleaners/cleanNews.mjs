@@ -3,7 +3,7 @@ import { dbConnect } from "../../helpers/helpers.mjs";
 const dbPath = '../mydatabase.db';
 const db = dbConnect(dbPath);
 
-const tableName = 'profiles';
+const tableName = 'userNews';
 
 const deleteQuery = `DROP TABLE ${tableName}`;
 
